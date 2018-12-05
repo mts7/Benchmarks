@@ -1,8 +1,10 @@
 <?php
 
+ini_set('memory_limit', -1);
+
 function generateArrayThreeDimension() {
   $array = [];
-  for ($i = 0; $i < 1000000; $i++) {
+  for ($i = 0; $i < 500000; $i++) {
     $array[] = [
       'first' => [
         mt_rand(1, 100),
@@ -70,18 +72,28 @@ $functions = [
   'timeForI',
 ];
 
-echo 'Three-dimensional array with keys<br />' . PHP_EOL;
-$array_three_dimension_keys = generateArrayThreeDimension();
-foreach ($functions as $func) {
-  $result = timer($func, $array_three_dimension_keys);
-  echo $func . ': ' . $result . '<br />' . PHP_EOL;
+$reporting = [];
+
+for ($i = 0; $i < 20; $i++) {
+  $array_three_dimension_keys = generateArrayThreeDimension();
+  foreach ($functions as $func) {
+    $result = timer($func, $array_three_dimension_keys);
+    $reporting['3d'][$func][] = $result;
+  }
+
+  $numbers = range(0, 1000000);
+  foreach ($functions as $func) {
+    $result = timer($func, $numbers);
+    $reporting['1d'][$func][] = $result;
+  }
 }
 
-echo '<br />' . PHP_EOL;
-
-echo 'One-dimensional array with indices<br />' . PHP_EOL;
-$numbers = range(0, 1000000);
-foreach ($functions as $func) {
-  $result = timer($func, $numbers);
-  echo $func . ': ' . $result . '<br />' . PHP_EOL;
+foreach ($reporting as $type => $functions) {
+  echo $type . '<br />' . PHP_EOL;
+  foreach ($functions as $func => $results) {
+    echo $func . '<br />' . PHP_EOL;
+    foreach ($results as $result) {
+      echo $result . '<br />' . PHP_EOL;
+    }
+  }
 }
