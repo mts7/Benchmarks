@@ -132,16 +132,18 @@ $number_of_results = 20;
 for ($i = 0; $i < $number_of_results; $i++) {
   foreach ($functions_multi_string as $func) {
     $result = timer($func, $array_three_dimension_keys);
-    $reporting['3d'][$func][] = $result;
+    $reporting['Three Dimensions with Strings'][$func][] = $result;
   }
 
   foreach ($functions_single_number as $func) {
     $result = timer($func, $numbers);
-    $reporting['1d'][$func][] = $result;
+    $reporting['Single Dimension with Numbers'][$func][] = $result;
   }
 }
 
+// TODO: send this to a reporting class that uses templates
 // display reports
+echo 'Number of Iterations: ' . $number_of_results . '<br />' . PHP_EOL;
 foreach ($reporting as $type => $functions) {
   echo $type . '<br />' . PHP_EOL;
   echo '<table>' . PHP_EOL;
