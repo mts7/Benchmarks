@@ -74,20 +74,24 @@ $functions = [
 
 $reporting = [];
 
+// create arrays for benchmarking
+$array_three_dimension_keys = generateArrayThreeDimension();
+$numbers = range(0, 1000000);
+
+// run the benchmarks multiple times to get report values
 for ($i = 0; $i < 20; $i++) {
-  $array_three_dimension_keys = generateArrayThreeDimension();
   foreach ($functions as $func) {
     $result = timer($func, $array_three_dimension_keys);
     $reporting['3d'][$func][] = $result;
   }
 
-  $numbers = range(0, 1000000);
   foreach ($functions as $func) {
     $result = timer($func, $numbers);
     $reporting['1d'][$func][] = $result;
   }
 }
 
+// display reports
 foreach ($reporting as $type => $functions) {
   echo $type . '<br />' . PHP_EOL;
   foreach ($functions as $func => $results) {
