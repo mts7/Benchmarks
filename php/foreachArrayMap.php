@@ -78,8 +78,10 @@ $reporting = [];
 $array_three_dimension_keys = generateArrayThreeDimension();
 $numbers = range(0, 1000000);
 
+$number_of_results = 20;
+
 // run the benchmarks multiple times to get report values
-for ($i = 0; $i < 20; $i++) {
+for ($i = 0; $i < $number_of_results; $i++) {
   foreach ($functions as $func) {
     $result = timer($func, $array_three_dimension_keys);
     $reporting['3d'][$func][] = $result;
@@ -95,9 +97,9 @@ for ($i = 0; $i < 20; $i++) {
 foreach ($reporting as $type => $functions) {
   echo $type . '<br />' . PHP_EOL;
   foreach ($functions as $func => $results) {
-    echo $func . '<br />' . PHP_EOL;
-    foreach ($results as $result) {
-      echo $result . '<br />' . PHP_EOL;
-    }
+    echo $func . ' average out of ' . $number_of_results . ': ';
+    // get average
+    echo array_sum($results) / $number_of_results;
+    echo '<br />' . PHP_EOL;
   }
 }
