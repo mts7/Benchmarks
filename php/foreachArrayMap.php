@@ -1,6 +1,7 @@
 <?php
 
 ini_set('memory_limit', -1);
+ini_set('max_execution_time', 180);
 
 function generateArrayThreeDimension() {
   $array = [];
@@ -143,10 +144,17 @@ for ($i = 0; $i < $number_of_results; $i++) {
 // display reports
 foreach ($reporting as $type => $functions) {
   echo $type . '<br />' . PHP_EOL;
+  echo '<table>' . PHP_EOL;
+  echo '<tr><th>Function</th><th>Average</th><th>Min</th><th>Max</th></tr>' . PHP_EOL;
   foreach ($functions as $func => $results) {
-    echo $func . ' average out of ' . $number_of_results . ': ';
+    echo '<tr>' . PHP_EOL;
+    echo '<td>' . $func . '</td>' . PHP_EOL;
     // get average
-    echo array_sum($results) / $number_of_results;
-    echo '<br />' . PHP_EOL;
+    echo '<td>' . array_sum($results) / $number_of_results . '</td>' . PHP_EOL;
+    // get min
+    echo '<td>' . min($results) . '</td>' . PHP_EOL;
+    echo '<td>' . max($results) . '</td>' . PHP_EOL;
+    echo '</tr>' . PHP_EOL;
   }
+  echo '</table>' . PHP_EOL;
 }
