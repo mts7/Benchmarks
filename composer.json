@@ -1,0 +1,14 @@
+{
+  "name": "mts7/benchmarks",
+  "description": "Code benchmarks",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Benchmark\\": "php/"
+    }
+  }
+}
