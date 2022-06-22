@@ -16,8 +16,10 @@ class EmptyArray
         }
     }
 
-    public static function benchmarkCount(array $array): void
+    public static function benchmarkCountEmpty(): void
     {
+        $array = [];
+
         for ($i = 0; $i < self::ITERATIONS; $i++) {
             if (count($array) === 0) {
                 $x = 1;
@@ -27,8 +29,10 @@ class EmptyArray
         }
     }
 
-    public static function benchmarkEmpty(array $array): void
+    public static function benchmarkEmptyEmpty(): void
     {
+        $array = [];
+
         for ($i = 0; $i < self::ITERATIONS; $i++) {
             if (empty($array)) {
                 $x = 1;
@@ -38,8 +42,10 @@ class EmptyArray
         }
     }
 
-    public static function benchmarkConstruct(array $array): void
+    public static function benchmarkConstructEmpty(): void
     {
+        $array = [];
+
         for ($i = 0; $i < self::ITERATIONS; $i++) {
             if ($array === []) {
                 $x = 1;
@@ -49,8 +55,62 @@ class EmptyArray
         }
     }
 
-    public static function benchmarkBoolean(array $array): void
+    public static function benchmarkBooleanEmpty(): void
     {
+        $array = [];
+
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
+            if (!(bool)$array) {
+                $x = 1;
+            } else {
+                $x = 2;
+            }
+        }
+    }
+
+    public static function benchmarkCountFilled(): void
+    {
+        $array = [];
+
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
+            if (count($array) === 0) {
+                $x = 1;
+            } else {
+                $x = 2;
+            }
+        }
+    }
+
+    public static function benchmarkEmptyFilled(): void
+    {
+        $array = [];
+
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
+            if (empty($array)) {
+                $x = 1;
+            } else {
+                $x = 2;
+            }
+        }
+    }
+
+    public static function benchmarkConstructFilled(): void
+    {
+        $array = [];
+
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
+            if ($array === []) {
+                $x = 1;
+            } else {
+                $x = 2;
+            }
+        }
+    }
+
+    public static function benchmarkBooleanFilled(): void
+    {
+        $array = [];
+
         for ($i = 0; $i < self::ITERATIONS; $i++) {
             if (!(bool)$array) {
                 $x = 1;
