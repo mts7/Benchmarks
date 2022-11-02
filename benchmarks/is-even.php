@@ -7,7 +7,7 @@
 declare(strict_types=1);
 
 use MtsBenchmarks\Benchmark;
-use MtsBenchmarks\Helpers\ContainerFactory;
+use MtsBenchmarks\Helper\ContainerFactory;
 
 /**
  * @psalm-suppress UnusedPsalmSuppress

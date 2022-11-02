@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace MtsBenchmarks;
 
-use MtsBenchmarks\Helpers\Calculate;
-use MtsBenchmarks\Helpers\Formatter;
+use MtsBenchmarks\Helper\Calculate;
+use MtsBenchmarks\Helper\Formatter;
+use MtsTimer\TimerInterface;
 
 /**
  * Display helpers for benchmarking
@@ -32,6 +33,7 @@ class Benchmark
         private readonly int $iterations,
         private readonly string $title,
         private readonly Calculate $calculator,
+        private readonly TimerInterface $timer,
     ) {
     }
 
@@ -158,15 +160,14 @@ class Benchmark
      */
     private function iterate(callable $method): string
     {
-        $duration = 0.0;
+        $this->timer->reset();
         for ($i = 0; $i < $this->iterations; $i++) {
-            $start = microtime(true);
+            $this->timer->start();
             $method($i);
-            $end = microtime(true);
-            $duration += $end - $start;
+            $this->timer->stop();
         }
 
-        return Formatter::toDecimal($duration);
+        return Formatter::toDecimal($this->timer->getTotalDuration());
     }
 
     private function pad(string $string = ''): string

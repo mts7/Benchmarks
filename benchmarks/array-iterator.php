@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use MtsBenchmarks\Benchmark;
-use MtsBenchmarks\Helpers\ContainerFactory;
+use MtsBenchmarks\Helper\ContainerFactory;
 
 ini_set('memory_limit', -1);
 ini_set('max_execution_time', 180);

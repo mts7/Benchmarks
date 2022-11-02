@@ -4,7 +4,8 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "mts7/php-dependency-injection": "1"
+        "mts7/php-dependency-injection": "^1",
+        "mts7/php-execution-timer": "^1"
     },
     "require-dev": {
         "infection/infection": "^0.26.15",
@@ -32,11 +33,5 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "infection/extension-installer": true
         }
-    },
-    "repositories": [
-        {
-            "url": "https://github.com/mts7/php-dependency-injection.git",
-            "type": "vcs"
-        }
-    ]
+    }
 }

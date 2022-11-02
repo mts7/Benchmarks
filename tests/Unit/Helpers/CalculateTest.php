@@ -2,15 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MtsBenchmarks\Tests\Unit;
+namespace MtsBenchmarks\Tests\Unit\Helpers;
 
-use MtsBenchmarks\Helpers\Calculate;
+use MtsBenchmarks\Helper\Calculate;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @psalm-suppress PropertyNotSetInConstructor
- * @psalm-suppress UnusedClass
- * @psalm-suppress MissingThrowsDocblock
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  */
 final class CalculateTest extends TestCase

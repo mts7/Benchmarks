@@ -24,9 +24,9 @@
         <properties>
             <property name="exceptions">
                 <value>
-                    MtsBenchmarks\Helpers\Calculate,
-                    MtsBenchmarks\Helpers\ContainerFactory,
-                    MtsBenchmarks\Helpers\Formatter
+                    MtsBenchmarks\Helper\Calculate,
+                    MtsBenchmarks\Helper\ContainerFactory,
+                    MtsBenchmarks\Helper\Formatter
                 </value>
             </property>
         </properties>
@@ -52,7 +52,7 @@
 
     <rule ref="rulesets/codesize.xml/ExcessiveParameterList">
         <properties>
-            <property name="minimum" value="5"/>
+            <property name="minimum" value="6"/>
         </properties>
     </rule>
 

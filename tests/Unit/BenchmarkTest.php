@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace MtsBenchmarks\Tests\Unit;
 
 use MtsBenchmarks\Benchmark;
-use MtsBenchmarks\Helpers\ContainerFactory;
-use MtsBenchmarks\Helpers\Formatter;
+use MtsBenchmarks\Helper\ContainerFactory;
+use MtsBenchmarks\Helper\Formatter;
 use MtsDependencyInjection\Container;
+use MtsTimer\FixedTimer;
+use MtsTimer\TimerInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @psalm-suppress PropertyNotSetInConstructor
- * @psalm-suppress UnusedClass
- * @psalm-suppress MissingThrowsDocblock
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  */
 final class BenchmarkTest extends TestCase
 {
+    private const TIMER_DURATION = 0.0125;
+
     private Container $container;
 
     protected function setUp(): void
@@ -25,6 +26,7 @@ final class BenchmarkTest extends TestCase
         parent::setUp();
 
         $this->container = ContainerFactory::create();
+        $this->container->set(TimerInterface::class, FixedTimer::class);
     }
 
     /**
@@ -67,16 +69,16 @@ final class BenchmarkTest extends TestCase
      * @param array<int|string,callable> $callables
      * @param array<int,array<string,string|int|float>> $expected
      *
-     * @dataProvider buildResultsData
-     *
      * @throws \MtsDependencyInjection\Exceptions\ContainerException
      * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
      * @throws \ReflectionException
+     *
+     * @dataProvider buildResultsData
      */
     public function testBuildResults(array $callables, array $expected): void
     {
-        $title = __FUNCTION__;
-        $fixture = $this->getBenchmark($title, 1, 1);
+        $this->setTimerDurations();
+        $fixture = $this->getBenchmark(__FUNCTION__);
 
         $fixture->execute($callables);
         $actual = $fixture->buildResults();
@@ -91,10 +93,10 @@ final class BenchmarkTest extends TestCase
         foreach ($results as $index => $result) {
             self::assertSame($expected[$index]['method'], $result['method']);
             // verify the time is greater than the minimum
-            self::assertGreaterThanOrEqual($expected[$index]['averageMin'], $result['average']);
-            self::assertGreaterThanOrEqual($expected[$index]['minimumMin'], $result['minimum']);
-            self::assertGreaterThanOrEqual($expected[$index]['maximumMin'], $result['maximum']);
-            self::assertGreaterThanOrEqual($expected[$index]['choppedMin'], $result['chopped']);
+            self::assertSame(Formatter::toDecimal($expected[$index]['average']), $result['average']);
+            self::assertSame(Formatter::toDecimal($expected[$index]['minimum']), $result['minimum']);
+            self::assertSame(Formatter::toDecimal($expected[$index]['maximum']), $result['maximum']);
+            self::assertSame(Formatter::toDecimal($expected[$index]['chopped']), $result['chopped']);
             // verify all the results are the same since there is only 1 sample and 1 iteration
             self::assertSame($result['average'], $result['minimum']);
             self::assertSame($result['average'], $result['maximum']);
@@ -119,14 +121,10 @@ final class BenchmarkTest extends TestCase
             'expected' => [
                 [
                     'method' => str_pad('noOp1', Benchmark::COLUMN_WIDTH),
-                    'averageMin' => 0,
-                    'minimumMin' => 0,
-                    'maximumMin' => 0,
-                    'choppedMin' => 0,
-                    'averageMax' => 1,
-                    'minimumMax' => 1,
-                    'maximumMax' => 1,
-                    'choppedMax' => 1,
+                    'average' => self::TIMER_DURATION,
+                    'minimum' => self::TIMER_DURATION,
+                    'maximum' => self::TIMER_DURATION,
+                    'chopped' => self::TIMER_DURATION,
                 ],
             ]
         ];
@@ -139,25 +137,17 @@ final class BenchmarkTest extends TestCase
             'expected' => [
                 [
                     'method' => str_pad('noOp1', Benchmark::COLUMN_WIDTH),
-                    'averageMin' => 0,
-                    'minimumMin' => 0,
-                    'maximumMin' => 0,
-                    'choppedMin' => 0,
-                    'averageMax' => 1,
-                    'minimumMax' => 1,
-                    'maximumMax' => 1,
-                    'choppedMax' => 1,
+                    'average' => self::TIMER_DURATION,
+                    'minimum' => self::TIMER_DURATION,
+                    'maximum' => self::TIMER_DURATION,
+                    'chopped' => self::TIMER_DURATION,
                 ],
                 [
                     'method' => str_pad('noOp2', Benchmark::COLUMN_WIDTH),
-                    'averageMin' => 0,
-                    'minimumMin' => 0,
-                    'maximumMin' => 0,
-                    'choppedMin' => 0,
-                    'averageMax' => 1,
-                    'minimumMax' => 1,
-                    'maximumMax' => 1,
-                    'choppedMax' => 1,
+                    'average' => self::TIMER_DURATION,
+                    'minimum' => self::TIMER_DURATION,
+                    'maximum' => self::TIMER_DURATION,
+                    'chopped' => self::TIMER_DURATION,
                 ],
             ]
         ];
@@ -172,6 +162,7 @@ final class BenchmarkTest extends TestCase
      */
     public function testBuildSamples(int $samples): void
     {
+        $this->setTimerDurations();
         $title = __FUNCTION__;
         $callable = [self::class, 'noOp'];
         $fixture = $this->getBenchmark($title, $samples);
@@ -179,7 +170,7 @@ final class BenchmarkTest extends TestCase
         $durations = $fixture->buildSamples($callable);
 
         self::assertCount($samples, $durations);
-        self::assertGreaterThanOrEqual(0, $durations[$samples - 1]);
+        self::assertSame(Formatter::toDecimal(self::TIMER_DURATION), $durations[$samples - 1]);
     }
 
     public function buildSamplesData(): iterable
@@ -218,6 +209,7 @@ final class BenchmarkTest extends TestCase
      */
     public function testRun(string $title, string $expectedTitle): void
     {
+        $this->setTimerDurations();
         $callables = ['noOp' => [self::class, 'noOp'], 'is_int'];
         $expectedLines = [
             "Benchmarking {$title} over 1 iterations with 1 samples",
@@ -277,11 +269,24 @@ final class BenchmarkTest extends TestCase
      * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
      * @throws \ReflectionException
      */
-    private function getBenchmark(string $title = 'tester', int $samples = 1, int $iterations = 1): Benchmark
+    private function getBenchmark(string $title = 'tester', int $samples = 1): Benchmark
     {
+        $iterations = 1;
         /** @var Benchmark $benchmark */
         $benchmark = $this->container->get(Benchmark::class, [$samples, $iterations, $title]);
 
         return $benchmark;
+    }
+
+    /**
+     * @throws \MtsDependencyInjection\Exceptions\ContainerException
+     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
+     * @throws \ReflectionException
+     */
+    private function setTimerDurations(): void {
+        /** @var FixedTimer $timer */
+        $timer = $this->container->get(TimerInterface::class);
+        $timer->setDuration(self::TIMER_DURATION);
+        $this->container->set(TimerInterface::class, $timer);
     }
 }

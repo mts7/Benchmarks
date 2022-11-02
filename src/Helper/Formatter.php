@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MtsBenchmarks\Helpers;
+namespace MtsBenchmarks\Helper;
 
 class Formatter
 {
