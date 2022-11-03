@@ -3,6 +3,7 @@
          name="Code Standards"
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
     <file>src/</file>
+    <file>tests/</file>
 
     <config name="ignore_warnings_on_exit" value="1"/>
 

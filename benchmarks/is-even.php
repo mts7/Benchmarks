@@ -7,7 +7,7 @@
 declare(strict_types=1);
 
 use MtsBenchmarks\Benchmark;
-use MtsBenchmarks\Helper\ContainerFactory;
+use MtsBenchmarks\Factory\ContainerFactory;
 
 /**
  * @psalm-suppress UnusedPsalmSuppress
@@ -27,7 +27,7 @@ function modular(int $value): bool
 }
 
 /**
- * Performs a bit comparison and determines if the bit is not set.
+ * Performs bit comparison and determines if the bit is not set.
  *
  * When the 1-bit is set, the value is odd (since a binary representation of an
  * odd number will end with the 1-bit set). For a number to be even, the 1-bit

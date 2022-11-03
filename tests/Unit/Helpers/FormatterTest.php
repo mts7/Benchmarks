@@ -30,7 +30,7 @@ final class FormatterTest extends TestCase
         ];
 
         yield '1 divided by 3' => [
-            'value' => 1/3,
+            'value' => 1 / 3,
             'expected' => '0.3333333333333333',
         ];
     }

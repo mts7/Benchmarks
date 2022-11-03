@@ -24,8 +24,8 @@
         <properties>
             <property name="exceptions">
                 <value>
+                    MtsBenchmarks\Factory\ContainerFactory,
                     MtsBenchmarks\Helper\Calculate,
-                    MtsBenchmarks\Helper\ContainerFactory,
                     MtsBenchmarks\Helper\Formatter
                 </value>
             </property>

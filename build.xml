@@ -138,8 +138,8 @@
             <arg value="memory_limit=-1" />
             <arg value="vendor/bin/infection" />
             <arg value="--threads=4" />
-            <arg value="--min-msi=90" />
-            <arg value="--min-covered-msi=90" />
+            <arg value="--min-msi=100" />
+            <arg value="--min-covered-msi=100" />
             <arg value="--coverage=reports" />
             <arg value="--skip-initial-tests" />
         </exec>

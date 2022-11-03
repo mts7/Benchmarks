@@ -77,6 +77,8 @@ class Benchmark
      * Executes the iterator for the method for the number of samples provided.
      *
      * @return array<int,string>
+     *
+     * @throws \MtsTimer\Exception\IncompleteTimingException
      */
     public function buildSamples(callable $method): array
     {
@@ -106,6 +108,8 @@ class Benchmark
      * Executes each callable method and stores the results.
      *
      * @param array<int|string,callable> $methods
+     *
+     * @throws \MtsTimer\Exception\IncompleteTimingException
      */
     public function execute(array $methods): void
     {
@@ -122,6 +126,8 @@ class Benchmark
      * Executes the benchmark steps and returns the result message.
      *
      * @param array<int|string,callable> $methods
+     *
+     * @throws \MtsTimer\Exception\IncompleteTimingException
      */
     final public function run(array $methods): string
     {
@@ -157,6 +163,7 @@ class Benchmark
 
     /**
      * Iterates over the callable $method and returns the loop duration.
+     * @throws \MtsTimer\Exception\IncompleteTimingException
      */
     private function iterate(callable $method): string
     {
@@ -165,6 +172,7 @@ class Benchmark
             $this->timer->start();
             $method($i);
             $this->timer->stop();
+            $this->timer->addDuration();
         }
 
         return Formatter::toDecimal($this->timer->getTotalDuration());
