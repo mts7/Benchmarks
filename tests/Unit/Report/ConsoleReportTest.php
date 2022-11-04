@@ -35,7 +35,7 @@ final class ConsoleReportTest extends TestCase
     }
 
     /**
-     * @dataProvider titleData
+     * @dataProvider buildHeadersData
      */
     public function testBuildHeaders(string $title, string $expectedTitle): void
     {
@@ -48,7 +48,7 @@ final class ConsoleReportTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function titleData(): iterable
+    public function buildHeadersData(): iterable
     {
         yield 'excessively-long title' => [
             'title' => md5(__FUNCTION__),
@@ -83,9 +83,14 @@ final class ConsoleReportTest extends TestCase
             return;
         }
 
+        $lines = explode(PHP_EOL, trim($actual, PHP_EOL));
+        foreach ($lines as $index => $line) {
+            $this->assertSame($expected[$index]['string'], $line);
+        }
+
         foreach ($expectedResults as $index => $result) {
             $this->assertSame($expected[$index]['method'], $result['method']);
-            // verify the time is greater than the minimum
+            // verify the time matches
             $this->assertSame($expected[$index]['average'], $result['average']);
             $this->assertSame($expected[$index]['minimum'], $result['minimum']);
             $this->assertSame($expected[$index]['maximum'], $result['maximum']);
@@ -111,6 +116,7 @@ final class ConsoleReportTest extends TestCase
             0.1241345,
             0.1242375,
         ];
+        $values = '| 0.1281365         | 0.1152345         | 0.1452345         | 0.127670277777... | ';
 
         yield 'empty results' => [
             'results' => [],
@@ -123,7 +129,33 @@ final class ConsoleReportTest extends TestCase
             ],
             'expected' => [
                 [
+                    'string' => ' | noOp              ' . $values,
                     'method' => 'noOp             ',
+                    'average' => '0.1281365        ',
+                    'minimum' => '0.1152345        ',
+                    'maximum' => '0.1452345        ',
+                    'chopped' => '0.127670277777... |',
+                ],
+            ],
+        ];
+
+        yield 'two results' => [
+            'results' => [
+                'noOp1' => $results,
+                'noOp2' => $results,
+            ],
+            'expected' => [
+                [
+                    'string' => ' | noOp1             ' . $values,
+                    'method' => 'noOp1            ',
+                    'average' => '0.1281365        ',
+                    'minimum' => '0.1152345        ',
+                    'maximum' => '0.1452345        ',
+                    'chopped' => '0.127670277777...',
+                ],
+                [
+                    'string' => ' | noOp2             ' . $values,
+                    'method' => 'noOp2            ',
                     'average' => '0.1281365        ',
                     'minimum' => '0.1152345        ',
                     'maximum' => '0.1452345        ',
@@ -139,6 +171,24 @@ final class ConsoleReportTest extends TestCase
         $expected = "Benchmarking {$title} over 1 iterations with 1 samples" . PHP_EOL . PHP_EOL;
 
         $actual = $this->fixture->buildTitle(1, 1, $title);
+
+        $this->assertSame($expected, $actual);
+    }
+
+    public function testGenerate(): void
+    {
+        $samples = 1;
+        $iterations = 1;
+        $title = __FUNCTION__;
+        $results = ['callable name' => [1, 1.5, 1.25, 2, 1.125, 1.625, 1.5, 2.125]];
+        $expected = 'Benchmarking testGenerate over 1 iterations with 1 samples
+
+ | testGenerate      | Average           | Minimum           | Maximum           | Chopped Average   | 
+=======================================================================================================
+ | callable name     | 1.515625          | 1.                | 2.125             | 1.5               | 
+';
+
+        $actual = $this->fixture->generate($samples, $iterations, $title, $results);
 
         $this->assertSame($expected, $actual);
     }

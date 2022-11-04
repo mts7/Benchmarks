@@ -47,24 +47,6 @@ class Benchmark
     }
 
     /**
-     * Executes each callable method and stores the results.
-     *
-     * @param array<int|string,callable> $methods
-     *
-     * @throws \MtsTimer\Exception\IncompleteTimingException
-     */
-    public function execute(array $methods): void
-    {
-        foreach ($methods as $key => $callable) {
-            if (is_int($key)) {
-                /** @var string $key */
-                $key = $callable;
-            }
-            $this->results[$key] = $this->buildSamples($callable);
-        }
-    }
-
-    /**
      * Executes the benchmark steps and returns the result message.
      *
      * @param array<int|string,callable> $methods
@@ -78,6 +60,24 @@ class Benchmark
         $this->execute($methods);
 
         return $this->results;
+    }
+
+    /**
+     * Executes each callable method and stores the results.
+     *
+     * @param array<int|string,callable> $methods
+     *
+     * @throws \MtsTimer\Exception\IncompleteTimingException
+     */
+    private function execute(array $methods): void
+    {
+        foreach ($methods as $key => $callable) {
+            if (is_int($key)) {
+                /** @var string $key */
+                $key = $callable;
+            }
+            $this->results[$key] = $this->buildSamples($callable);
+        }
     }
 
     /**
