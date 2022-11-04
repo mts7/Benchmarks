@@ -7,7 +7,7 @@ namespace MtsBenchmarks;
 use MtsTimer\TimerInterface;
 
 /**
- * Display helpers for benchmarking
+ * Benchmark framework for executing callables and timing those executions
  */
 class Benchmark
 {
@@ -47,7 +47,7 @@ class Benchmark
     }
 
     /**
-     * Executes the benchmark steps and returns the result message.
+     * Executes the benchmark steps and returns the results array.
      *
      * @param array<int|string,callable> $methods
      *

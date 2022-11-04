@@ -75,6 +75,8 @@ class ConsoleReport implements ReportInterface
     }
 
     /**
+     * Calls all of the display methods in order and returns their output.
+     *
      * @param array<string,array<int,float>> $results
      */
     public function generate(int $samples, int $iterations, string $title, array $results): string
