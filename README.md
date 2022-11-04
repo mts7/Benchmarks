@@ -92,3 +92,4 @@ system took 2 times longer to execute than on
 - separate display from processing
 - increase speed/performance
 - handle the timeouts from Infection creating infinite loops during testing
+- add timing and memory usage in display output
