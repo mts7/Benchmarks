@@ -98,5 +98,5 @@ system took 2 times longer to execute than on
 
 - increase speed/performance
 - handle the timeouts from Infection creating infinite loops during testing
-- add additional report options
-- add timing and memory usage in display output
+- add additional report options (like HTML, XML)
+- add timing and memory usage in ConsoleReport output

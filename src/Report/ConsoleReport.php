@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MtsBenchmarks\Report;
 
-use MtsBenchmarks\Helper\Calculate;
+use MtsBenchmarks\Helper\Calculator;
 
 /**
  * Report for the console
  */
-class ConsoleReport implements ReportInterface
+class ConsoleReport
 {
     public const COLUMN_WIDTH = 17;
     public const SEPARATOR = ' | ';
@@ -17,7 +17,7 @@ class ConsoleReport implements ReportInterface
     /**
      * @psalm-suppress PossiblyUnusedMethod
      */
-    public function __construct(private readonly Calculate $calculator)
+    public function __construct(private readonly Calculator $calculator)
     {
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MtsBenchmarks\Factory;
 
 use MtsBenchmarks\Benchmark;
-use MtsBenchmarks\Helper\Calculate;
+use MtsBenchmarks\Helper\Calculator;
 use MtsBenchmarks\Report\ConsoleReport;
 use MtsDependencyInjection\Container;
 use MtsTimer\Timer;
@@ -48,7 +48,7 @@ class ContainerFactory
     {
         return [
             Benchmark::class,
-            Calculate::class,
+            Calculator::class,
             ConsoleReport::class => ConsoleReport::class,
             TimerInterface::class => Timer::class,
         ];

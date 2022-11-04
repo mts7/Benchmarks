@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MtsBenchmarks\Tests\Unit\Helpers;
 
-use MtsBenchmarks\Helper\Calculate;
+use MtsBenchmarks\Helper\Calculator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,13 +12,13 @@ use PHPUnit\Framework\TestCase;
  */
 final class CalculateTest extends TestCase
 {
-    private Calculate $fixture;
+    private Calculator $fixture;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fixture = new Calculate();
+        $this->fixture = new Calculator();
     }
 
     /**
