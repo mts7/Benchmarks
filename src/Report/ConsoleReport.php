@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MtsBenchmarks\Report;
 
 use MtsBenchmarks\Helper\Calculate;
-use MtsBenchmarks\Helper\Formatter;
 
 /**
  * Report for the console
@@ -49,7 +48,7 @@ class ConsoleReport implements ReportInterface
     {
         $output = '';
         foreach ($results as $method => $durations) {
-            $elements = [$method, ...$this->calculate($durations)];
+            $elements = [$method, ...$this->calculator->summary($durations)];
             $output .= self::SEPARATOR;
             foreach ($elements as $element) {
                 $output .= $this->pad($element) . self::SEPARATOR;
@@ -75,7 +74,7 @@ class ConsoleReport implements ReportInterface
     }
 
     /**
-     * Calls all of the display methods in order and returns their output.
+     * Calls all the display methods in order and returns their output.
      *
      * @param array<string,array<int,float>> $results
      */
@@ -86,29 +85,6 @@ class ConsoleReport implements ReportInterface
         $output .= $this->buildResults($results);
 
         return $output;
-    }
-
-    /**
-     * Calculates the average, minimum, and maximum durations.
-     *
-     * @param array<float|string> $values
-     *
-     * @return array<int,string>
-     *
-     * @psalm-suppress ArgumentTypeCoercion
-     */
-    private function calculate(array $values): array
-    {
-        $average = $this->calculator->average($values);
-        /** @var float $minimum */
-        $minimum = min($values);
-        /** @var float $maximum */
-        $maximum = max($values);
-        $condensed = $this->calculator->choppedAverage($values);
-
-        return array_map(static function (float|string $float): string {
-            return Formatter::toDecimal($float);
-        }, [$average, $minimum, $maximum, $condensed]);
     }
 
     private function pad(string $string = ''): string
