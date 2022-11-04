@@ -6,6 +6,7 @@ namespace MtsBenchmarks\Factory;
 
 use MtsBenchmarks\Benchmark;
 use MtsBenchmarks\Helper\Calculate;
+use MtsBenchmarks\Report\ConsoleReport;
 use MtsDependencyInjection\Container;
 use MtsTimer\Timer;
 use MtsTimer\TimerInterface;
@@ -48,6 +49,7 @@ class ContainerFactory
         return [
             Benchmark::class,
             Calculate::class,
+            ConsoleReport::class => ConsoleReport::class,
             TimerInterface::class => Timer::class,
         ];
     }

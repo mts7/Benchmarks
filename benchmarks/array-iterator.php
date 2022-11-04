@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use MtsBenchmarks\Benchmark;
 use MtsBenchmarks\Factory\ContainerFactory;
+use MtsBenchmarks\Report\ConsoleReport;
 
 ini_set('memory_limit', -1);
 ini_set('max_execution_time', 180);
@@ -196,26 +197,29 @@ $iterations = 3;
 
 $container = ContainerFactory::create();
 try {
+    /** @var ConsoleReport $report */
+    $report = $container->get(ConsoleReport::class);
     /** @var Benchmark $benchmarkString */
-    $benchmarkString = $container->get(Benchmark::class, [$samples, $iterations, 'String[] Iterator']);
-    echo $benchmarkString->run([
+    $benchmarkString = $container->get(Benchmark::class, [$samples, $iterations]);
+    $results = $benchmarkString->run([
         'foreachString',
         'arrayMapString',
         'arrayMapNamedString',
         'forILengthString',
         'forICountString',
     ]);
-    echo PHP_EOL;
+    echo $report->generate($samples, $iterations, 'String[] Iterator', $results) . PHP_EOL;
 
     /** @var Benchmark $benchmarkNumber */
-    $benchmarkNumber = $container->get(Benchmark::class, [$samples, $iterations, 'Number[] Iterator']);
-    echo $benchmarkNumber->run([
+    $benchmarkNumber = $container->get(Benchmark::class, [$samples, $iterations]);
+    $results = $benchmarkNumber->run([
         'foreachNumber',
         'arrayMapNumber',
         'arrayMapNamedNumber',
         'forILengthNumber',
         'forICountNumber',
     ]);
+    echo $report->generate($samples, $iterations, 'Number[] Iterator', $results) . PHP_EOL;
 } catch (\ReflectionException) {
     echo 'The container was not properly initialized.';
 } catch (\Throwable $exception) {
