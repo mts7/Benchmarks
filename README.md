@@ -31,33 +31,40 @@ for the number of iterations per sample for the number of samples and provides
 the callable with a parameter of the current iteration. All the necessary steps
 to benchmark are included in the correct order by using the `run` method.
 
+After calling `run`, any report class can accept the results and process them.
+
 ```php
 $samples = 5;
 $iterations = 100;
 $title = 'callable name';
 
-$benchmark = $container->get(\MtsBenchmarks\Benchmark::class, [$samples, $iterations, $title]);
+$benchmark = $container->get(\MtsBenchmarks\Benchmark::class, [$samples, $iterations]);
 
-echo $benchmark->run(['callable']);
+$results = $benchmark->run(['callable']);
+
+$report = $container->get(\MtsBenchmarks\Report\ConsoleReport::class);
+
+echo $report->generate($samples, $iterations, $title, $results);
 ```
 
 ### Multiple Method Calls
 
 In this form, the framework provides the time calculation results of each
-callable rather than the raw data. The outputs have formatting to display
-nicely on a console.
+callable rather than the raw data. Output formatting is handled by a report
+object.
 
 ```php
 $samples = 5;
 $iterations = 100;
 $title = 'callable name';
 
-$benchmark = $container->get(\MtsBenchmarks\Benchmark::class, [$samples, $iterations, $title]);
+$benchmark = $container->get(\MtsBenchmarks\Benchmark::class, [$samples, $iterations]);
+$report = $container->get(\MtsBenchmarks\Report\ConsoleReport::class);
 
-$output = $benchmark->buildTitle();
-$output .= $benchmark->buildHeaders();
-$benchmark->execute(['callable']);
-$output .= $benchmark->buildResults();
+$output = $report->buildTitle($samples, $iterations, $title);
+$output .= $report->buildHeaders($title);
+$results = $benchmark->run(['callable']);
+$output .= $report->buildResults($results);
 
 echo $output;
 ```
@@ -89,7 +96,7 @@ system took 2 times longer to execute than on
 
 ## Future Enhancements
 
-- separate display from processing
 - increase speed/performance
 - handle the timeouts from Infection creating infinite loops during testing
-- add timing and memory usage in display output
+- add additional report options (like HTML, XML)
+- add timing and memory usage in ConsoleReport output

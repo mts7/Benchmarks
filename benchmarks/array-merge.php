@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use MtsBenchmarks\Benchmark;
 use MtsBenchmarks\Factory\ContainerFactory;
+use MtsBenchmarks\Report\ConsoleReport;
 
 /**
  * @psalm-suppress UnusedPsalmSuppress
@@ -52,10 +53,14 @@ $filled = array_fill(0, 30, md5(__FILE__ . time() . microtime()));
 $extras = array_fill(0, 20, 'extras');
 
 $container = ContainerFactory::create();
+/** @noinspection BadExceptionsProcessingInspection */
 try {
+    /** @var ConsoleReport $report */
+    $report = $container->get(ConsoleReport::class);
     /** @var Benchmark $benchmark */
-    $benchmark = $container->get(Benchmark::class, [$samples, $iterations, $title]);
-    echo $benchmark->run($methods);
+    $benchmark = $container->get(Benchmark::class, [$samples, $iterations]);
+    $results = $benchmark->run($methods);
+    echo $report->generate($samples, $iterations, $title, $results) . PHP_EOL;
 } catch (ReflectionException) {
     echo 'The container was not properly initialized.';
 } catch (Throwable $exception) {
