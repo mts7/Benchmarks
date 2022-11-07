@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  */
-final class CalculateTest extends TestCase
+final class CalculatorTest extends TestCase
 {
     private Calculator $fixture;
 

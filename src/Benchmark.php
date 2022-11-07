@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MtsBenchmarks;
 
+use MtsBenchmarks\Factory\ContainerFactory;
+use MtsBenchmarks\Helper\IncrementIntegerIterator;
+use MtsDependencyInjection\Container;
 use MtsTimer\TimerInterface;
 
 /**
@@ -11,6 +14,8 @@ use MtsTimer\TimerInterface;
  */
 class Benchmark
 {
+    private Container $container;
+
     /**
      * @var array<string,array<int,float>> $results
      */
@@ -27,6 +32,7 @@ class Benchmark
         private readonly int $iterations,
         private readonly TimerInterface $timer,
     ) {
+        $this->container = ContainerFactory::create();
     }
 
     /**
@@ -34,12 +40,20 @@ class Benchmark
      *
      * @return array<int,float>
      *
+     * @throws \MtsDependencyInjection\Exceptions\ContainerException
+     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
      * @throws \MtsTimer\Exception\IncompleteTimingException
+     * @throws \ReflectionException
+     *
+     * @psalm-suppress UnusedForeachValue
      */
     public function buildSamples(callable $method): array
     {
         $durations = [];
-        for ($sample = 0; $sample < $this->samples; $sample++) {
+        /** @var IncrementIntegerIterator $iterator */
+        $iterator = $this->container->get(IncrementIntegerIterator::class, [$this->samples]);
+        /** @noinspection PhpUnusedLocalVariableInspection */
+        foreach ($iterator as $value) {
             $durations[] = $this->iterate($method);
         }
 
@@ -53,7 +67,10 @@ class Benchmark
      *
      * @return array<string,array<int,float>>
      *
+     * @throws \MtsDependencyInjection\Exceptions\ContainerException
+     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
      * @throws \MtsTimer\Exception\IncompleteTimingException
+     * @throws \ReflectionException
      */
     final public function run(array $methods): array
     {
@@ -67,7 +84,10 @@ class Benchmark
      *
      * @param array<int|string,callable> $methods
      *
+     * @throws \MtsDependencyInjection\Exceptions\ContainerException
+     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
      * @throws \MtsTimer\Exception\IncompleteTimingException
+     * @throws \ReflectionException
      */
     private function execute(array $methods): void
     {
@@ -82,14 +102,22 @@ class Benchmark
 
     /**
      * Iterates over the callable $method and returns the loop duration.
+     *
+     * @throws \MtsDependencyInjection\Exceptions\ContainerException
+     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
      * @throws \MtsTimer\Exception\IncompleteTimingException
+     * @throws \ReflectionException
+     *
+     * @noinspection DisconnectedForeachInstructionInspection
      */
     private function iterate(callable $method): float
     {
         $this->timer->reset();
-        for ($i = 0; $i < $this->iterations; $i++) {
+        /** @var IncrementIntegerIterator $iterator */
+        $iterator = $this->container->get(IncrementIntegerIterator::class, [$this->iterations]);
+        foreach ($iterator as $value) {
             $this->timer->start();
-            $method($i);
+            $method($value);
             $this->timer->stop();
             $this->timer->addDuration();
         }

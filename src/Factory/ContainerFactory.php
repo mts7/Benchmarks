@@ -6,6 +6,7 @@ namespace MtsBenchmarks\Factory;
 
 use MtsBenchmarks\Benchmark;
 use MtsBenchmarks\Helper\Calculator;
+use MtsBenchmarks\Helper\IncrementIntegerIterator;
 use MtsBenchmarks\Report\ConsoleReport;
 use MtsDependencyInjection\Container;
 use MtsTimer\Timer;
@@ -49,7 +50,8 @@ class ContainerFactory
         return [
             Benchmark::class,
             Calculator::class,
-            ConsoleReport::class => ConsoleReport::class,
+            ConsoleReport::class,
+            IncrementIntegerIterator::class,
             TimerInterface::class => Timer::class,
         ];
     }

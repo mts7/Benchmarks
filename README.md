@@ -97,6 +97,6 @@ system took 2 times longer to execute than on
 ## Future Enhancements
 
 - increase speed/performance
-- handle the timeouts from Infection creating infinite loops during testing
 - add additional report options (like HTML, XML)
 - add timing and memory usage in ConsoleReport output
+- allow benchmark functions to have any number of parameters rather than requiring an int
