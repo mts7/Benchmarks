@@ -14,7 +14,6 @@
     phpVersion="8.1"
 >
     <projectFiles>
-        <directory name="benchmarks" />
         <directory name="src" />
         <directory name="tests" />
         <ignoreFiles>
