@@ -2,16 +2,10 @@
 
 A framework for benchmarking simple functionality
 
-Fully-functional examples are in the [benchmarks](benchmarks) directory.
-
-```shell
-php benchmarks/is-even.php
-```
-
 ## Installation
 
 ```shell
-composer require --dev mts7/Benchmarks
+composer require --dev mts7/Benchmarks --prefer-dist
 ```
 
 ## Usage
@@ -100,3 +94,22 @@ system took 2 times longer to execute than on
 - add additional report options (like HTML, XML)
 - add timing and memory usage in ConsoleReport output
 - allow benchmark functions to have any number of parameters rather than requiring an int
+
+## Included Benchmarks
+
+Note these are not included in the distribution package and are only available
+in the source.
+
+```shell
+composer require --dev mts7/Benchmarks --prefer-source
+```
+
+- [Array Iterator](benchmarks/array-iterator.php)
+- [Array Merge](benchmarks/array-merge.php)
+- [Array Unique](benchmarks/array-unique.php)
+  -  This uses the `DS` PECL extension to test `Set`
+- [Empty Array](benchmarks/empty-array.php)
+- [Is Even](benchmarks/is-even.php)
+
+All of these benchmarks are ready to execute by running
+`php benchmarks/{file-name}.php`. 
