@@ -3,8 +3,8 @@ version: 2.1
 executors:
   php-81:
     docker:
-      - image: cimg/php:8.1
-    resource_class: medium
+      - image: cimg/php:8.2
+    resource_class: large
 
 orbs:
   php: circleci/php@1.1.0

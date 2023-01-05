@@ -56,7 +56,6 @@ function set_structure(): array
 
     $items = new Set();
     foreach ($subject as $value) {
-        /** @psalm-suppress InvalidScalarArgument */
         $items->add($value);
     }
 

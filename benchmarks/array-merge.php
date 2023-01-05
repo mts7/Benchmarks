@@ -38,6 +38,7 @@ function spreadOperator(int $value): array
 {
     global $filled, $extras;
 
+    /** @psalm-suppress InvalidOperand */
     return [...$filled, ...$extras];
 }
 
