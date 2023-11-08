@@ -34,7 +34,6 @@ $title = 'callable name';
 
 $benchmark = $container->get(\MtsBenchmarks\Benchmark::class,
     [
-        $container->get(\MtsTimer\TimerInterface::class),
         $container->get(\MtsBenchmarks\Helper\IncrementIntegerIterator::class, [$samples]),
         $container->get(\MtsBenchmarks\Helper\IncrementIntegerIterator::class, [$iterations]),
     ]
@@ -60,7 +59,6 @@ $title = 'callable name';
 
 $benchmark = $container->get(\MtsBenchmarks\Benchmark::class,
     [
-        $container->get(\MtsTimer\TimerInterface::class),
         $container->get(\MtsBenchmarks\Helper\IncrementIntegerIterator::class, [$samples]),
         $container->get(\MtsBenchmarks\Helper\IncrementIntegerIterator::class, [$iterations]),
     ]

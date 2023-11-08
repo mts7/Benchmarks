@@ -54,7 +54,6 @@ function set_structure(): array
 {
     global $subject;
 
-    /** @noinspection */
     $items = new \Ds\Set();
     foreach ($subject as $value) {
         $items->add($value);
