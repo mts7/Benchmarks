@@ -6,7 +6,6 @@
 
 declare(strict_types=1);
 
-use Ds\Set;
 use MtsBenchmarks\Benchmark;
 use MtsBenchmarks\Factory\ContainerFactory;
 use MtsBenchmarks\Helper\IncrementIntegerIterator;
@@ -55,7 +54,8 @@ function set_structure(): array
 {
     global $subject;
 
-    $items = new Set();
+    /** @noinspection */
+    $items = new \Ds\Set();
     foreach ($subject as $value) {
         $items->add($value);
     }
