@@ -137,6 +137,9 @@ jobs:
       - store_artifacts:
           path: reports/infection.html
           destination: infection.html
+      - store_artifacts:
+          path: reports/infection.log
+          destination: infection.log
   psalm:
     executor: php-81
     steps:

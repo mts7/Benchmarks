@@ -14,9 +14,6 @@ class ConsoleReport
     public const COLUMN_WIDTH = 17;
     public const SEPARATOR = ' | ';
 
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
     public function __construct(private readonly Calculator $calculator)
     {
     }

@@ -24,9 +24,6 @@ class IncrementIntegerIterator implements Iterator
 
     private int $pointer = 0;
 
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
     public function __construct(int $iterations)
     {
         $this->iterations = $iterations;

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MtsBenchmarks;
 
-use MtsBenchmarks\Factory\ContainerFactory;
 use MtsBenchmarks\Helper\IncrementIntegerIterator;
-use MtsDependencyInjection\Container;
 use MtsTimer\TimerInterface;
 
 /**
@@ -14,25 +12,16 @@ use MtsTimer\TimerInterface;
  */
 class Benchmark
 {
-    private Container $container;
-
     /**
      * @var array<string,array<int,float>> $results
      */
     private array $results = [];
 
-    /**
-     * @param int $samples The number of durations to accumulate
-     * @param int $iterations The number of times to execute the method
-     *
-     * @psalm-suppress PossiblyUnusedMethod
-     */
     public function __construct(
-        private readonly int $samples,
-        private readonly int $iterations,
+        private readonly IncrementIntegerIterator $samplesIterator,
+        private readonly IncrementIntegerIterator $iterationsIterator,
         private readonly TimerInterface $timer,
     ) {
-        $this->container = ContainerFactory::create();
     }
 
     /**
@@ -50,10 +39,8 @@ class Benchmark
     public function buildSamples(callable $method): array
     {
         $durations = [];
-        /** @var IncrementIntegerIterator $iterator */
-        $iterator = $this->container->get(IncrementIntegerIterator::class, [$this->samples]);
         /** @noinspection PhpUnusedLocalVariableInspection */
-        foreach ($iterator as $value) {
+        foreach ($this->samplesIterator as $value) {
             $durations[] = $this->iterate($method);
         }
 
@@ -113,9 +100,7 @@ class Benchmark
     private function iterate(callable $method): float
     {
         $this->timer->reset();
-        /** @var IncrementIntegerIterator $iterator */
-        $iterator = $this->container->get(IncrementIntegerIterator::class, [$this->iterations]);
-        foreach ($iterator as $value) {
+        foreach ($this->iterationsIterator as $value) {
             $this->timer->start();
             $method($value);
             $this->timer->stop();

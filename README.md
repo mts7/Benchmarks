@@ -32,7 +32,12 @@ $samples = 5;
 $iterations = 100;
 $title = 'callable name';
 
-$benchmark = $container->get(\MtsBenchmarks\Benchmark::class, [$samples, $iterations]);
+$benchmark = $container->get(\MtsBenchmarks\Benchmark::class,
+    [
+        $container->get(\MtsBenchmarks\Helper\IncrementIntegerIterator::class, [$samples]),
+        $container->get(\MtsBenchmarks\Helper\IncrementIntegerIterator::class, [$iterations]),
+    ]
+);
 
 $results = $benchmark->run(['callable']);
 
@@ -52,7 +57,12 @@ $samples = 5;
 $iterations = 100;
 $title = 'callable name';
 
-$benchmark = $container->get(\MtsBenchmarks\Benchmark::class, [$samples, $iterations]);
+$benchmark = $container->get(\MtsBenchmarks\Benchmark::class,
+    [
+        $container->get(\MtsBenchmarks\Helper\IncrementIntegerIterator::class, [$samples]),
+        $container->get(\MtsBenchmarks\Helper\IncrementIntegerIterator::class, [$iterations]),
+    ]
+);
 $report = $container->get(\MtsBenchmarks\Report\ConsoleReport::class);
 
 $output = $report->buildTitle($samples, $iterations, $title);

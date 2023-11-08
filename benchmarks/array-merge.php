@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use MtsBenchmarks\Benchmark;
 use MtsBenchmarks\Factory\ContainerFactory;
+use MtsBenchmarks\Helper\IncrementIntegerIterator;
 use MtsBenchmarks\Report\ConsoleReport;
 
 /**
@@ -59,7 +60,12 @@ try {
     /** @var ConsoleReport $report */
     $report = $container->get(ConsoleReport::class);
     /** @var Benchmark $benchmark */
-    $benchmark = $container->get(Benchmark::class, [$samples, $iterations]);
+    $benchmark = $container->get(Benchmark::class,
+        [
+            $container->get(IncrementIntegerIterator::class, [$samples]),
+            $container->get(IncrementIntegerIterator::class, [$iterations]),
+        ]
+    );
     $results = $benchmark->run($methods);
     echo $report->generate($samples, $iterations, $title, $results) . PHP_EOL;
 } catch (ReflectionException) {
