@@ -11,6 +11,7 @@ use MtsBenchmarks\Tests\Mock\Blank;
 use MtsDependencyInjection\Container;
 use MtsTimer\FixedTimer;
 use MtsTimer\TimerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +34,7 @@ final class BenchmarkTest extends TestCase
         $this->blankMock = $this->getMockBuilder(Blank::class)
             ->onlyMethods(['noOp'])
             ->getMock();
-        $this->blankMock->method('noOp')->will($this->returnArgument(0));
+        $this->blankMock->method('noOp')->willReturnArgument(0);
     }
 
     /**
@@ -63,7 +64,7 @@ final class BenchmarkTest extends TestCase
         );
     }
 
-    public function buildSamplesData(): iterable
+    public static function buildSamplesData(): iterable
     {
         yield 'one' => [
             'samples' => 1,
@@ -100,7 +101,7 @@ final class BenchmarkTest extends TestCase
     /**
      * @return iterable<string,array<string,array<int|string,string|callable|array<int,float>>>>
      */
-    public function runData(): iterable
+    public static function runData(): iterable
     {
         yield 'multiple methods' => [
             'callables' => [

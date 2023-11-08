@@ -2,3 +2,4 @@
 /reports/
 /composer.lock
 /psalm.xml
+/.phpunit.cache
