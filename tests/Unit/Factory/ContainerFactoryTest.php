@@ -13,6 +13,6 @@ final class ContainerFactoryTest extends TestCase
     {
         $config = ContainerFactory::getConfig();
 
-        $this->assertNotEmpty($config);
+        $this->assertCount(5, $config);
     }
 }

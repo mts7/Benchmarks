@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MtsBenchmarks\Tests\Unit;
+namespace MtsBenchmarks\Tests\Integration;
 
 use MtsBenchmarks\Benchmark;
-use MtsBenchmarks\Factory\ContainerFactory;
 use MtsBenchmarks\Helper\Formatter;
+use MtsBenchmarks\Helper\IncrementIntegerIterator;
 use MtsBenchmarks\Tests\Mock\Blank;
-use MtsDependencyInjection\Container;
 use MtsTimer\FixedTimer;
 use MtsTimer\TimerInterface;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -22,14 +20,9 @@ final class BenchmarkTest extends TestCase
 {
     private MockObject $blankMock;
 
-    private Container $container;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->container = ContainerFactory::create();
-        $this->container->set(TimerInterface::class, FixedTimer::class);
 
         $this->blankMock = $this->getMockBuilder(Blank::class)
             ->onlyMethods(['noOp'])
@@ -39,18 +32,12 @@ final class BenchmarkTest extends TestCase
 
     /**
      * @dataProvider buildSamplesData
-     *
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \MtsTimer\Exception\IncompleteTimingException
-     * @throws \ReflectionException
      */
     public function testBuildSamples(int $samples): void
     {
         $this->blankMock->expects($this->atLeastOnce())
             ->method('noOp');
 
-        $this->setTimerDurations();
         /** @var callable $callable */
         $callable = [$this->blankMock, 'noOp'];
         $fixture = $this->getBenchmark($samples);
@@ -80,15 +67,9 @@ final class BenchmarkTest extends TestCase
      *
      * @param array<int|string,callable> $callables
      * @param array<string,array<int,float>> $expected
-     *
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \MtsTimer\Exception\IncompleteTimingException
-     * @throws \ReflectionException
      */
     public function testRun(array $callables, array $expected): void
     {
-        $this->setTimerDurations();
         $fixture = $this->getBenchmark();
 
         $actual = $fixture->run($callables);
@@ -119,29 +100,23 @@ final class BenchmarkTest extends TestCase
         ];
     }
 
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
     private function getBenchmark(int $samples = 1): Benchmark
     {
-        $iterations = 1;
-        /** @var Benchmark $benchmark */
-        $benchmark = $this->container->get(Benchmark::class, [$samples, $iterations]);
+        $timer = $this->createMock(TimerInterface::class);
+        $timer->method('getTotalDuration')
+            ->willReturn(1.7);
+        $samplesIterator = new IncrementIntegerIterator($samples);
+        $iterationsIterator = new IncrementIntegerIterator(1);
 
-        return $benchmark;
-    }
+        $timer->expects($this->atLeastOnce())
+            ->method('reset');
+        $timer->expects($this->atLeastOnce())
+            ->method('start');
+        $timer->expects($this->atLeastOnce())
+            ->method('stop');
+        $timer->expects($this->atLeastOnce())
+            ->method('addDuration');
 
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
-    private function setTimerDurations(): void
-    {
-        /** @var FixedTimer $timer */
-        $timer = $this->container->get(TimerInterface::class);
-        $this->container->set(TimerInterface::class, $timer);
+        return new Benchmark($timer, $samplesIterator, $iterationsIterator);
     }
 }

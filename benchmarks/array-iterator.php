@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use MtsBenchmarks\Benchmark;
 use MtsBenchmarks\Factory\ContainerFactory;
+use MtsBenchmarks\Helper\IncrementIntegerIterator;
 use MtsBenchmarks\Report\ConsoleReport;
 
 ini_set('memory_limit', -1);
@@ -200,7 +201,12 @@ try {
     /** @var ConsoleReport $report */
     $report = $container->get(ConsoleReport::class);
     /** @var Benchmark $benchmarkString */
-    $benchmarkString = $container->get(Benchmark::class, [$samples, $iterations]);
+    $benchmarkString = $container->get(Benchmark::class,
+        [
+            $container->get(IncrementIntegerIterator::class, [$samples]),
+            $container->get(IncrementIntegerIterator::class, [$iterations])
+        ]
+    );
     $results = $benchmarkString->run([
         'foreachString',
         'arrayMapString',
@@ -211,7 +217,12 @@ try {
     echo $report->generate($samples, $iterations, 'String[] Iterator', $results) . PHP_EOL;
 
     /** @var Benchmark $benchmarkNumber */
-    $benchmarkNumber = $container->get(Benchmark::class, [$samples, $iterations]);
+    $benchmarkNumber = $container->get(Benchmark::class,
+        [
+            $container->get(IncrementIntegerIterator::class, [$samples]),
+            $container->get(IncrementIntegerIterator::class, [$iterations])
+        ]
+    );
     $results = $benchmarkNumber->run([
         'foreachNumber',
         'arrayMapNumber',
