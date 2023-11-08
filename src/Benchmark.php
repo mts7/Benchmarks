@@ -18,9 +18,9 @@ class Benchmark
     private array $results = [];
 
     public function __construct(
-        private readonly TimerInterface $timer,
         private readonly IncrementIntegerIterator $samplesIterator,
         private readonly IncrementIntegerIterator $iterationsIterator,
+        private readonly TimerInterface $timer,
     ) {
     }
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MtsBenchmarks\Tests\Unit\Report;
+namespace MtsBenchmarks\Tests\Integration\Report;
 
 use Generator;
-use MtsBenchmarks\Factory\ContainerFactory;
+use MtsBenchmarks\Helper\Calculator;
 use MtsBenchmarks\Report\ConsoleReport;
 use PHPUnit\Framework\TestCase;
 
@@ -18,19 +18,13 @@ final class ConsoleReportTest extends TestCase
 {
     private ConsoleReport $fixture;
 
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $container = ContainerFactory::create();
+        $calculator = new Calculator();
 
-        /** @var ConsoleReport $report */
-        $report = $container->get(ConsoleReport::class);
+        $report = new ConsoleReport($calculator);
         $this->fixture = $report;
     }
 

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MtsBenchmarks\Tests\Unit\Helpers;
 
-use MtsBenchmarks\Factory\ContainerFactory;
 use MtsBenchmarks\Helper\IncrementIntegerIterator;
-use MtsDependencyInjection\Container;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,20 +12,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class IncrementIntegerIteratorTest extends TestCase
 {
-    private Container $container;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->container = ContainerFactory::create();
-    }
-
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
     public function testCurrent(): void
     {
         $fixture = $this->getIterator();
@@ -38,11 +22,6 @@ final class IncrementIntegerIteratorTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
     public function testKey(): void
     {
         $fixture = $this->getIterator();
@@ -53,11 +32,6 @@ final class IncrementIntegerIteratorTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
     public function testNext(): void
     {
         $fixture = $this->getIterator();
@@ -69,11 +43,6 @@ final class IncrementIntegerIteratorTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
     public function testRewind(): void
     {
         $iterations = 5;
@@ -94,11 +63,6 @@ final class IncrementIntegerIteratorTest extends TestCase
         $this->assertSame(array_values($values), array_keys($values));
     }
 
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
     public function testValid(): void
     {
         $iterations = 3;
@@ -113,16 +77,8 @@ final class IncrementIntegerIteratorTest extends TestCase
         $this->assertFalse($actual);
     }
 
-    /**
-     * @throws \MtsDependencyInjection\Exceptions\ContainerException
-     * @throws \MtsDependencyInjection\Exceptions\MissingContainerDefinitionException
-     * @throws \ReflectionException
-     */
     private function getIterator(int $iterations = 10): IncrementIntegerIterator
     {
-        /** @var IncrementIntegerIterator $iterator */
-        $iterator = $this->container->get(IncrementIntegerIterator::class, [$iterations]);
-
-        return $iterator;
+        return new IncrementIntegerIterator($iterations);
     }
 }

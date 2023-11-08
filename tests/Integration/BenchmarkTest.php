@@ -102,11 +102,11 @@ final class BenchmarkTest extends TestCase
 
     private function getBenchmark(int $samples = 1): Benchmark
     {
-        $timer = $this->createMock(TimerInterface::class);
-        $timer->method('getTotalDuration')
-            ->willReturn(1.7);
         $samplesIterator = new IncrementIntegerIterator($samples);
         $iterationsIterator = new IncrementIntegerIterator(1);
+        $timer = $this->createMock(TimerInterface::class);
+        $timer->method('getTotalDuration')
+            ->willReturn(FixedTimer::DURATION);
 
         $timer->expects($this->atLeastOnce())
             ->method('reset');
@@ -117,6 +117,6 @@ final class BenchmarkTest extends TestCase
         $timer->expects($this->atLeastOnce())
             ->method('addDuration');
 
-        return new Benchmark($timer, $samplesIterator, $iterationsIterator);
+        return new Benchmark($samplesIterator, $iterationsIterator, $timer);
     }
 }

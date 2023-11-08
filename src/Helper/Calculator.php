@@ -7,7 +7,7 @@ namespace MtsBenchmarks\Helper;
 /**
  * Perform calculations related to benchmarks.
  */
-final class Calculator
+class Calculator
 {
     public function average(array $values): float
     {
