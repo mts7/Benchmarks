@@ -22,7 +22,7 @@ final class FormatterTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
-    public function toDecimalData(): iterable
+    public static function toDecimalData(): iterable
     {
         yield 'zero' => [
             'value' => 0,

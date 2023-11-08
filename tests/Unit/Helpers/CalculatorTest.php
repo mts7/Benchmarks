@@ -31,7 +31,7 @@ final class CalculatorTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
-    public function averageData(): iterable
+    public static function averageData(): iterable
     {
         yield '2, 4, 6, 7' => [
             'values' => [2, 4, 6, 7],
@@ -64,7 +64,7 @@ final class CalculatorTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
-    public function choppedAverageData(): iterable
+    public static function choppedAverageData(): iterable
     {
         yield '7, 4, 6, 2' => [
             'values' => [7, 4, 6, 2],

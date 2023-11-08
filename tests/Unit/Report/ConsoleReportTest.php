@@ -48,7 +48,7 @@ final class ConsoleReportTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function buildHeadersData(): iterable
+    public static function buildHeadersData(): iterable
     {
         yield 'excessively-long title' => [
             'title' => md5(__FUNCTION__),
@@ -101,7 +101,7 @@ final class ConsoleReportTest extends TestCase
     /**
      * @return \Generator<string,array<string,array<int|string,array<int|string,float|string>>>>
      */
-    public function buildResultsData(): Generator
+    public static function buildResultsData(): Generator
     {
         $results = [
             0.1252345,
