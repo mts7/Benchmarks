@@ -9,7 +9,7 @@
         "mts7/php-execution-timer": "^1"
     },
     "require-dev": {
-        "mts7/php-code-quality": "^0.1.17",
+        "mts7/php-code-quality": "^0.1.18",
         "phpunit/phpunit": "^10.4",
         "roave/security-advisories": "dev-latest"
     },
