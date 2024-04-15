@@ -10,7 +10,7 @@
     },
     "require-dev": {
         "mts7/php-code-quality": "^0.1.19",
-        "phpunit/phpunit": "^10.4",
+        "phpunit/phpunit": "^10.5",
         "roave/security-advisories": "dev-latest"
     },
     "autoload": {
