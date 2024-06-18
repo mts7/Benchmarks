@@ -144,6 +144,9 @@ jobs:
       - store_artifacts:
           path: reports/infection.log
           destination: infection.log
+      - run:
+          name: Move clover.xml
+          command: mv ~/reports/clover.xml reports/clover.xml
       - codecov/upload:
           file: reports/clover.xml
   psalm:
