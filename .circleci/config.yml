@@ -207,3 +207,6 @@ workflows:
       - psalm:
           requires:
             - job-init
+      - upload-to-codecov:
+          requires:
+            - test
