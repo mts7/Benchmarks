@@ -144,9 +144,6 @@ jobs:
       - store_artifacts:
           path: reports/infection.log
           destination: infection.log
-  upload-to-codecov:
-    executor: php-81
-    steps:
       - codecov/upload:
           file: ~/reports/clover.xml
   psalm:
@@ -207,6 +204,3 @@ workflows:
       - psalm:
           requires:
             - job-init
-      - upload-to-codecov:
-          requires:
-            - test
