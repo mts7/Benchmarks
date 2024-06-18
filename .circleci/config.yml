@@ -145,7 +145,7 @@ jobs:
           path: reports/infection.log
           destination: infection.log
       - codecov/upload:
-          file: ~/reports/clover.xml
+          file: reports/clover.xml
   psalm:
     executor: php-81
     steps:
