@@ -125,7 +125,7 @@ jobs:
       - store_artifacts:
           path: reports/coverage-xml
           destination: coverage-xml
-      - codecov/upload
+      - codecov/upload file=~/reports/coverage-xml
       - store_artifacts:
           path: ~/reports/junit.xml
           destination: junit.xml
