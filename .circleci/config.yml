@@ -129,7 +129,7 @@ jobs:
           path: reports/clover.xml
           destination: clover.xml
       - codecov/upload:
-          parameters: { "file": "~/reports/clover.xml" }
+          file: ~/reports/clover.xml
       - store_artifacts:
           path: ~/reports/junit.xml
           destination: junit.xml
