@@ -125,6 +125,9 @@ jobs:
       - store_artifacts:
           path: reports/coverage-xml
           destination: coverage-xml
+      - run
+          name: Upload to Code Cov
+          command: codecov/upload
       - store_artifacts:
           path: ~/reports/junit.xml
           destination: junit.xml
@@ -185,10 +188,6 @@ jobs:
       - store_artifacts:
           path: reports/psalm-security.sarif
           destination: psalm-security.sarif
-  upload_to_codecov:
-    steps:
-      - checkout_code
-      - codecov/upload
 
 workflows:
   build:
@@ -203,6 +202,3 @@ workflows:
       - psalm:
           requires:
             - job-init
-      - upload_to_codecov:
-          requires:
-            - test
