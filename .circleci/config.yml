@@ -199,8 +199,8 @@ workflows:
       - psalm:
           requires:
             - job-init
-  upload-to-codecov:
-    jobs:
-      - checkout
-      - codecov/upload
+      - upload_to_codecov:
+          requires:
+            - job-init
+          - codecov/upload
 
