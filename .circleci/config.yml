@@ -126,10 +126,8 @@ jobs:
           path: reports/coverage-xml
           destination: coverage-xml
       - store_artifacts:
-          path: reports/clover.xml
+          path: ~/reports/clover.xml
           destination: clover.xml
-      - codecov/upload:
-          file: ~/reports/clover.xml
       - store_artifacts:
           path: ~/reports/junit.xml
           destination: junit.xml
@@ -146,6 +144,11 @@ jobs:
       - store_artifacts:
           path: reports/infection.log
           destination: infection.log
+  upload-to-codecov:
+    executor: php-81
+    steps:
+      - codecov/upload:
+          file: ~/reports/clover.xml
   psalm:
     executor: php-81
     steps:
