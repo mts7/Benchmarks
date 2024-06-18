@@ -185,6 +185,10 @@ jobs:
       - store_artifacts:
           path: reports/psalm-security.sarif
           destination: psalm-security.sarif
+  upload_to_codecov:
+    steps:
+      - init_jobs
+      - codecov/upload
 
 workflows:
   build:
@@ -201,6 +205,4 @@ workflows:
             - job-init
       - upload_to_codecov:
           requires:
-            - job-init
-          - codecov/upload
-
+            - test
