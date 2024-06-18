@@ -187,7 +187,7 @@ jobs:
           destination: psalm-security.sarif
   upload_to_codecov:
     steps:
-      - init_jobs
+      - checkout_code
       - codecov/upload
 
 workflows:
