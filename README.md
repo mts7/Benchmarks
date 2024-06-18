@@ -2,6 +2,8 @@
 
 A framework for benchmarking simple functionality
 
+[![codecov](https://codecov.io/github/mts7/Benchmarks/graph/badge.svg?token=LYIOQC8NKZ)](https://codecov.io/github/mts7/Benchmarks)
+
 ## Installation
 
 ```shell
